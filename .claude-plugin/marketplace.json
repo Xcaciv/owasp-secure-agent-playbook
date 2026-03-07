@@ -15,11 +15,11 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./.claude/skills/code-review-security",
-        "./.claude/skills/sca-audit",
-        "./.claude/skills/secrets-scan",
-        "./.claude/skills/api-security-review",
-        "./.claude/skills/web-security-review"
+        "./skills/code-review-security",
+        "./skills/sca-audit",
+        "./skills/secrets-scan",
+        "./skills/api-security-review",
+        "./skills/web-security-review"
       ]
     },
     {
@@ -28,11 +28,11 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./.claude/skills/agent-security-audit",
-        "./.claude/skills/llm-risk-assess",
-        "./.claude/skills/agentic-ai-risk-assess",
-        "./.claude/skills/mcp-server-review",
-        "./.claude/skills/prompt-injection-test"
+        "./skills/agent-security-audit",
+        "./skills/llm-risk-assess",
+        "./skills/agentic-ai-risk-assess",
+        "./skills/mcp-server-review",
+        "./skills/prompt-injection-test"
       ]
     }
   ]

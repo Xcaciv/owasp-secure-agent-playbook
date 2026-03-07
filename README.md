@@ -12,21 +12,16 @@ Each **play** is a step-by-step security procedure with checklists, decision cri
 
 **With Claude Code (recommended):**
 
-1. Clone this repo
-2. Open Claude Code in the repo directory
-3. Type `/` to see all available security skills:
-
-```
-/agent-security-audit    — Audit an AI agent's security posture
-/llm-risk-assess         — Assess LLM app against OWASP LLM Top 10
-/mcp-server-review       — Review MCP server for security issues
-/sca-audit               — Scan dependencies for known CVEs
-/code-review-security    — Security-focused code review
-/secrets-scan            — Detect hardcoded credentials and secrets
-/api-security-review     — Review API against OWASP API Security Top 10
+Install as a plugin:
+```bash
+/plugin marketplace add cmaenner/agent-security-playbook
 ```
 
-Claude also auto-invokes relevant skills based on your conversation — ask it to "review this code for security issues" and it will pick up the right play.
+Then install a skill set:
+- `code-security-skills` — Code review, SCA, secrets, API, and web security
+- `ai-security-skills` — Agent audit, LLM risk, agentic AI, MCP review, prompt injection
+
+Or point Claude at any play directly — ask it to "review this code for security issues" and it will pick up the right procedure.
 
 **Without Claude Code:**
 
@@ -68,10 +63,10 @@ Immediate, practical value for any codebase.
 
 Two-layer design:
 
-- **`.claude/skills/`** — Concise `SKILL.md` files with YAML frontmatter. Claude Code auto-discovers these and makes them invocable via `/skill-name`. They also auto-activate based on conversation context.
+- **`skills/`** — Self-contained `SKILL.md` files following the [Agent Skills spec](https://agentskills.io/specification). Installable as a Claude Code plugin via `.claude-plugin/marketplace.json`. Each skill summarizes a procedure and references its corresponding play.
 - **`plays/`** — Full reference procedures with detailed checklists, tables, decision criteria, and examples. Skills reference these for comprehensive coverage.
 
-Contributors edit plays. Skills are the thin invocation layer. This means the playbook works with any AI agent (just point it at a play), while Claude Code users get native slash-command integration.
+Contributors edit plays. Skills are the thin invocation layer. This means the playbook works with any AI agent (just point it at a play), while Claude Code users get plugin-based installation.
 
 ## OWASP Foundation
 
