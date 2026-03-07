@@ -13,6 +13,22 @@ threats:
   - context window overflow causing excessive computation
   - side-channel attacks extracting model architecture details
 summary: "Unbounded consumption occurs when LLM applications permit excessive inferences without rate limiting, cost controls, or resource management — enabling denial of service, denial of wallet, and model extraction attacks."
+aisvs_mappings:
+  - section: "C2.6"
+    title: "Input Rate Limiting & Abuse Prevention"
+    requirements: ["2.6.1", "2.6.2", "2.6.3", "2.6.4"]
+  - section: "C4.6"
+    title: "AI Infrastructure Resource Management"
+    requirements: ["4.6.1", "4.6.2"]
+  - section: "C9.1"
+    title: "Execution Budgets & Circuit Breakers"
+    requirements: ["9.1.1", "9.1.2", "9.1.3"]
+  - section: "C10.5"
+    title: "Model-Extraction Defense"
+    requirements: ["10.5.1", "10.5.2", "10.5.3", "10.5.5"]
+  - section: "C13.1"
+    title: "Kill-Switch & Override Mechanisms"
+    requirements: ["13.1.1", "13.1.2", "13.1.3"]
 ---
 
 # LLM10:2025 Unbounded Consumption
@@ -53,6 +69,16 @@ This vulnerability describes how LLM applications permit excessive, uncontrolled
 2. **Repeated requests** — High-volume API requests deplete computational resources.
 3. **Denial of wallet** — Excessive operations exploit pay-per-use pricing, causing unexpected costs.
 4. **Model replication** — Attacker uses API to generate synthetic training data, cloning the model's capabilities.
+
+## AISVS Controls
+
+| AISVS Section | Control | Key Requirements |
+|---------------|---------|-----------------|
+| C2.6 Rate Limiting & Abuse Prevention | Per-user/IP/API-key rate limits, burst/sustained tuning, anomalous pattern blocking | 2.6.1, 2.6.2, 2.6.3, 2.6.4 |
+| C4.6 Resource Management | Workload resource quotas, automated protections on threshold breach | 4.6.1, 4.6.2 |
+| C9.1 Execution Budgets | Per-execution budgets, cumulative counters, circuit breakers on violations | 9.1.1, 9.1.2, 9.1.3 |
+| C10.5 Model-Extraction Defense | Rate limits, query-entropy detection, watermarks, extraction alerts with incident response | 10.5.1, 10.5.2, 10.5.3, 10.5.5 |
+| C13.1 Kill-Switch & Override | Manual kill-switch, authorized override controls, rollback procedures | 13.1.1, 13.1.2, 13.1.3 |
 
 ## Related Frameworks
 

@@ -13,6 +13,25 @@ threats:
   - RAG knowledge base poisoning
   - malicious model serialization
 summary: "Data poisoning manipulates training data across pre-training, fine-tuning, and embedding stages to introduce vulnerabilities, backdoors, or biases — including 'sleeper agent' models that remain dormant until triggered."
+aisvs_mappings:
+  - section: "C1.1"
+    title: "Training Data Provenance"
+    requirements: ["1.1.1", "1.1.2", "1.1.3", "1.1.4"]
+  - section: "C1.2"
+    title: "Training Data Security & Integrity"
+    requirements: ["1.2.1", "1.2.2", "1.2.4", "1.2.5", "1.2.7"]
+  - section: "C1.4"
+    title: "Training Data Quality & Security Assurance"
+    requirements: ["1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5"]
+  - section: "C1.5"
+    title: "Data Lineage & Traceability"
+    requirements: ["1.5.1", "1.5.2", "1.5.3"]
+  - section: "C10.6"
+    title: "Inference-Time Poisoned-Data Detection"
+    requirements: ["10.6.1", "10.6.2", "10.6.3", "10.6.4"]
+  - section: "C3.4"
+    title: "Secure Development Practices"
+    requirements: ["3.4.3", "3.4.4"]
 ---
 
 # LLM04:2025 Data and Model Poisoning
@@ -50,6 +69,17 @@ Data poisoning involves manipulating training data across pre-training, fine-tun
 2. **Toxic data propagation** — Unfiltered toxic data produces harmful outputs that propagate dangerous information.
 3. **Falsified training documents** — Malicious actors introduce falsified documents, causing inaccurate model outputs.
 4. **Backdoor triggers** — Poisoning techniques embed triggers enabling authentication bypass, data exfiltration, or hidden command execution.
+
+## AISVS Controls
+
+| AISVS Section | Control | Key Requirements |
+|---------------|---------|-----------------|
+| C1.1 Training Data Provenance | Maintain inventory with origin/license, exclude unnecessary PII, approval workflow, watermarking | 1.1.1, 1.1.2, 1.1.3, 1.1.4 |
+| C1.2 Training Data Security | Access controls, audit logging, encryption, cryptographic integrity verification | 1.2.1, 1.2.2, 1.2.4, 1.2.5, 1.2.7 |
+| C1.4 Quality & Security Assurance | Automated validation, poisoning detection, confidence thresholds, adversarial defenses, label skew detection | 1.4.1, 1.4.2, 1.4.3, 1.4.4, 1.4.5 |
+| C1.5 Data Lineage & Traceability | Reconstruct lineage, immutable records, track synthetic data | 1.5.1, 1.5.2, 1.5.3 |
+| C10.6 Poisoned-Data Detection | Anomaly detector before inference, threshold tuning, soft-blocking, stress-testing | 10.6.1, 10.6.2, 10.6.3, 10.6.4 |
+| C3.4 Secure Development Practices | Isolated training environments, validated data with chain of custody | 3.4.3, 3.4.4 |
 
 ## Related Frameworks
 

@@ -13,6 +13,25 @@ threats:
   - cross-context information leaks in multi-tenant vector stores
   - knowledge conflicts between retrieved and trained data
 summary: "Vector and embedding weaknesses affect RAG systems through unauthorized access to embeddings, data poisoning of knowledge bases, embedding inversion attacks, and cross-tenant information leaks in shared vector stores."
+aisvs_mappings:
+  - section: "C8.1"
+    title: "Access Controls on Memory & RAG Indices"
+    requirements: ["8.1.1", "8.1.2", "8.1.3"]
+  - section: "C8.2"
+    title: "Embedding Sanitization & Validation"
+    requirements: ["8.2.1", "8.2.2"]
+  - section: "C8.3"
+    title: "Memory Expiry, Revocation & Deletion"
+    requirements: ["8.3.1", "8.3.2", "8.3.3"]
+  - section: "C8.4"
+    title: "Prevent Embedding Inversion & Leakage"
+    requirements: ["8.4.1", "8.4.2"]
+  - section: "C8.5"
+    title: "Scope Enforcement for User-Specific Memory"
+    requirements: ["8.5.1", "8.5.2", "8.5.3", "8.5.4", "8.5.5"]
+  - section: "C5.5"
+    title: "Multi-Tenant Isolation"
+    requirements: ["5.5.1", "5.5.2", "5.5.3", "5.5.4"]
 ---
 
 # LLM08:2025 Vector and Embedding Weaknesses
@@ -43,6 +62,17 @@ This vulnerability category addresses risks in systems using Retrieval Augmented
 1. **Data poisoning** — Attacker embeds hidden instructions (white text on white background) in a resume submitted to a RAG-based job screening system, causing it to recommend an unqualified candidate.
 2. **Access control failure** — In multi-tenant environments sharing a vector database, embeddings from one user group are retrieved for another group's queries, leaking sensitive information.
 3. **Behavior alteration** — After RAG implementation, an LLM's response to an emotional query becomes purely factual, losing empathetic tone despite remaining accurate.
+
+## AISVS Controls
+
+| AISVS Section | Control | Key Requirements |
+|---------------|---------|-----------------|
+| C8.1 Access Controls on RAG Indices | Namespace/collection scope controls with default-deny, scoped API claims, cross-scope detection | 8.1.1, 8.1.2, 8.1.3 |
+| C8.2 Embedding Sanitization | Detect sensitive data before embedding, reject malformed/poisoning inputs | 8.2.1, 8.2.2 |
+| C8.3 Memory Expiry & Deletion | Retention times on stored vectors, purge within defined timeframes, ensure unrecoverability | 8.3.1, 8.3.2, 8.3.3 |
+| C8.4 Embedding Inversion Prevention | Protect sensitive collections via encryption, privacy/utility regression tests | 8.4.1, 8.4.2 |
+| C8.5 User-Specific Memory Scope | Scope constraints in vector engine, prevent cross-scope collisions, adversarial multi-tenant tests | 8.5.1, 8.5.2, 8.5.3, 8.5.4, 8.5.5 |
+| C5.5 Multi-Tenant Isolation | Default-deny cross-tenant policies, authenticated tenant IDs, namespace segregation, per-tenant encryption | 5.5.1, 5.5.2, 5.5.3, 5.5.4 |
 
 ## Related Frameworks
 

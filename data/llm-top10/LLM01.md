@@ -13,6 +13,22 @@ threats:
   - multimodal injection via images or audio
   - adversarial suffix attacks
 summary: "Prompt injection occurs when user inputs or external content manipulate LLM behavior in unintended ways, causing guideline violations, unauthorized access, or data exfiltration."
+aisvs_mappings:
+  - section: "C2.1"
+    title: "Prompt Injection Defense"
+    requirements: ["2.1.1", "2.1.2", "2.1.3"]
+  - section: "C2.2"
+    title: "Adversarial-Example Resistance"
+    requirements: ["2.2.1", "2.2.2", "2.2.3", "2.2.4", "2.2.5"]
+  - section: "C2.7"
+    title: "Multi-Modal Input Validation"
+    requirements: ["2.7.1", "2.7.2", "2.7.3", "2.7.5"]
+  - section: "C2.8"
+    title: "Real-Time Adaptive Threat Detection"
+    requirements: ["2.8.1", "2.8.2", "2.8.3"]
+  - section: "C10.1"
+    title: "Model Alignment & Safety"
+    requirements: ["10.1.2", "10.1.4"]
 ---
 
 # LLM01:2025 Prompt Injection
@@ -55,6 +71,16 @@ Prompt injection vulnerabilities occur when user inputs manipulate LLM behavior 
 5. **Multimodal injection** — Attacker embeds malicious prompt in image accompanying benign text. Multimodal AI processing both concurrently processes hidden prompt.
 6. **Adversarial suffix** — Attacker appends seemingly meaningless character string to prompt, influencing output and bypassing safety measures.
 7. **Multilingual/obfuscated attack** — Attacker uses multiple languages or encodes instructions via Base64 or emojis to evade filters.
+
+## AISVS Controls
+
+| AISVS Section | Control | Key Requirements |
+|---------------|---------|-----------------|
+| C2.1 Prompt Injection Defense | Treat external inputs as untrusted, enforce instruction hierarchy, sanitize third-party content | 2.1.1, 2.1.2, 2.1.3 |
+| C2.2 Adversarial-Example Resistance | Input normalization, quarantine suspected inputs, anomaly detection, adversarial-hardened models | 2.2.1, 2.2.2, 2.2.3, 2.2.4, 2.2.5 |
+| C2.7 Multi-Modal Input Validation | Validate non-text inputs, scan for steganography, detect adversarial perturbations, cross-modal attacks | 2.7.1, 2.7.2, 2.7.3, 2.7.5 |
+| C2.8 Real-Time Adaptive Threat Detection | Pattern matching on inputs/outputs, risk-adaptive responses, contextual analysis | 2.8.1, 2.8.2, 2.8.3 |
+| C10.1 Model Alignment & Safety | Refusal guard-rails, counter-jailbreak training | 10.1.2, 10.1.4 |
 
 ## Related Frameworks
 

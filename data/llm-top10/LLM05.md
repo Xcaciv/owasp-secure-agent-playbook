@@ -14,6 +14,22 @@ threats:
   - path traversal via LLM-constructed file paths
   - remote code execution via dynamic evaluation of LLM output
 summary: "Improper output handling occurs when LLM-generated content is passed to downstream systems without validation or sanitization, enabling XSS, SQL injection, command injection, and remote code execution."
+aisvs_mappings:
+  - section: "C7.1"
+    title: "Output Format Enforcement"
+    requirements: ["7.1.1", "7.1.2", "7.1.3", "7.1.4"]
+  - section: "C7.3"
+    title: "Output Safety & Privacy Filtering"
+    requirements: ["7.3.1", "7.3.2", "7.3.3"]
+  - section: "C7.4"
+    title: "Output & Action Limiting"
+    requirements: ["7.4.1", "7.4.2", "7.4.3"]
+  - section: "C9.3"
+    title: "Tool and Plugin Isolation"
+    requirements: ["9.3.4"]
+  - section: "C2.4"
+    title: "Schema, Type & Length Validation"
+    requirements: ["2.4.1", "2.4.2", "2.4.3"]
 ---
 
 # LLM05:2025 Improper Output Handling
@@ -49,6 +65,16 @@ This vulnerability involves inadequate validation, sanitization, and handling of
 3. **Database destruction** — Unreviewed SQL queries generated through chat interface result in database deletion.
 4. **XSS via crafted prompts** — Crafted prompts generate unsanitized JavaScript payloads rendering as XSS in victim browsers.
 5. **Malicious code generation** — Code generation introduces hallucinated packages with vulnerabilities.
+
+## AISVS Controls
+
+| AISVS Section | Control | Key Requirements |
+|---------------|---------|-----------------|
+| C7.1 Output Format Enforcement | Validate outputs against strict schema, use stop sequences/token limits, treat output as untrusted | 7.1.1, 7.1.2, 7.1.3, 7.1.4 |
+| C7.3 Output Safety & Privacy Filtering | Block harmful content, scan and redact PII, block confidential data | 7.3.1, 7.3.2, 7.3.3 |
+| C7.4 Output & Action Limiting | Per-user token limits, require confirmation for high-impact actions, max recursion depth | 7.4.1, 7.4.2, 7.4.3 |
+| C9.3 Tool and Plugin Isolation | Validate tool outputs against strict schemas before downstream use | 9.3.4 |
+| C2.4 Schema, Type & Length Validation | Define explicit input schemas, reject oversized inputs, enforce type checks | 2.4.1, 2.4.2, 2.4.3 |
 
 ## Related Frameworks
 

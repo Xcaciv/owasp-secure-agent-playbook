@@ -13,6 +13,31 @@ threats:
   - tool chaining enabling unintended destructive outcomes
   - deprecated plugins remaining accessible to agents
 summary: "Excessive agency occurs when LLM-based systems are granted overpermissioned tools, excessive functionality, or autonomous execution of high-impact actions without adequate human oversight or privilege constraints."
+aisvs_mappings:
+  - section: "C9.2"
+    title: "High-Impact Action Approval"
+    requirements: ["9.2.1", "9.2.2", "9.2.3"]
+  - section: "C9.3"
+    title: "Tool and Plugin Isolation"
+    requirements: ["9.3.1", "9.3.2", "9.3.3", "9.3.6"]
+  - section: "C9.6"
+    title: "Authorization, Delegation & Continuous Enforcement"
+    requirements: ["9.6.1", "9.6.2", "9.6.3"]
+  - section: "C9.7"
+    title: "Intent Verification & Constraint Gates"
+    requirements: ["9.7.1", "9.7.2", "9.7.3"]
+  - section: "C9.1"
+    title: "Execution Budgets & Circuit Breakers"
+    requirements: ["9.1.1", "9.1.2", "9.1.3"]
+  - section: "C5.6"
+    title: "Autonomous Agent Authorization"
+    requirements: ["5.6.1", "5.6.2", "5.6.3", "5.6.4"]
+  - section: "C7.4"
+    title: "Output & Action Limiting"
+    requirements: ["7.4.2", "7.4.3"]
+  - section: "C13.2"
+    title: "Human-in-the-Loop Decision Checkpoints"
+    requirements: ["13.2.1", "13.2.2", "13.2.4"]
 ---
 
 # LLM06:2025 Excessive Agency
@@ -53,6 +78,19 @@ LLM-based systems granted agency to invoke functions or extensions may suffer fr
 
 1. **Email exfiltration** — A personal assistant app with mailbox access is exploited via malicious incoming email. Hidden instructions trick the LLM into scanning the inbox for sensitive information and forwarding it to the attacker.
 2. **Tool chaining** — Individually safe tool calls are chained together to achieve a harmful outcome that no single tool would permit.
+
+## AISVS Controls
+
+| AISVS Section | Control | Key Requirements |
+|---------------|---------|-----------------|
+| C9.2 High-Impact Action Approval | Require human approval for privileged/irreversible actions, bind approvals to parameters, test rollback | 9.2.1, 9.2.2, 9.2.3 |
+| C9.3 Tool and Plugin Isolation | Sandboxed execution, per-tool quotas, declared privileges, quarantine on violation | 9.3.1, 9.3.2, 9.3.3, 9.3.6 |
+| C9.6 Authorization & Delegation | Fine-grained tool/parameter policies, integrity-protected delegation, time-bound scopes | 9.6.1, 9.6.2, 9.6.3 |
+| C9.7 Intent Verification | Pre-execution constraint gates, explicit user intent confirmation, post-condition checks | 9.7.1, 9.7.2, 9.7.3 |
+| C9.1 Execution Budgets | Per-execution budgets, cumulative resource counters, circuit breakers | 9.1.1, 9.1.2, 9.1.3 |
+| C5.6 Autonomous Agent Authorization | Scoped capability tokens, high-risk capabilities disabled by default, session-bound tokens | 5.6.1, 5.6.2, 5.6.3, 5.6.4 |
+| C7.4 Output & Action Limiting | Require confirmation for high-impact actions, max recursion depth and delegation limits | 7.4.2, 7.4.3 |
+| C13.2 Human-in-the-Loop | High-risk decisions require human approval, risk thresholds with auto-triggers, escalation procedures | 13.2.1, 13.2.2, 13.2.4 |
 
 ## Related Frameworks
 

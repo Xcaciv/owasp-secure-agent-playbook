@@ -13,6 +13,28 @@ threats:
   - malicious datasets introduced during fine-tuning
   - on-device model tampering
 summary: "LLM supply chains face vulnerabilities affecting training data, models, and deployment platforms — including poisoned pre-trained models, compromised LoRA adapters, vulnerable dependencies, and tampered on-device deployments."
+aisvs_mappings:
+  - section: "C6.1"
+    title: "Pretrained Model Vetting & Origin Integrity"
+    requirements: ["6.1.1", "6.1.2", "6.1.3", "6.1.4", "6.1.5"]
+  - section: "C6.2"
+    title: "Framework & Library Scanning"
+    requirements: ["6.2.1", "6.2.2", "6.2.3"]
+  - section: "C6.3"
+    title: "Dependency Pinning & Verification"
+    requirements: ["6.3.1", "6.3.2", "6.3.3"]
+  - section: "C6.4"
+    title: "Trusted Source Enforcement"
+    requirements: ["6.4.1", "6.4.2", "6.4.3"]
+  - section: "C6.7"
+    title: "AI BOM for Model Artifacts"
+    requirements: ["6.7.1", "6.7.2", "6.7.3"]
+  - section: "C3.1"
+    title: "Model Authorization & Integrity"
+    requirements: ["3.1.1", "3.1.2", "3.1.3", "3.1.4"]
+  - section: "C6.6"
+    title: "Supply Chain Attack Monitoring"
+    requirements: ["6.6.1", "6.6.2", "6.6.3"]
 ---
 
 # LLM03:2025 Supply Chain
@@ -55,6 +77,18 @@ LLM supply chains face vulnerabilities affecting training data integrity, models
 3. **Compromised LoRA suppliers** — Malicious adapters merged via model merge on Hugging Face compromise integrated systems.
 4. **LeftOvers (CVE-2023-4969)** — Exploitation of leaked GPU local memory to recover sensitive data from production servers.
 5. **Dataset poisoning** — Attackers poison public datasets creating backdoors favoring specific companies.
+
+## AISVS Controls
+
+| AISVS Section | Control | Key Requirements |
+|---------------|---------|-----------------|
+| C6.1 Pretrained Model Vetting | Signed provenance records, automated scanning, license documentation, quarantine high-risk models | 6.1.1, 6.1.2, 6.1.3, 6.1.4, 6.1.5 |
+| C6.2 Framework & Library Scanning | CI dependency scanners, block critical vulns, static analysis on forks | 6.2.1, 6.2.2, 6.2.3 |
+| C6.3 Dependency Pinning | Version pinning via lockfiles, immutable digests, alerts for unmaintained deps | 6.3.1, 6.3.2, 6.3.3 |
+| C6.4 Trusted Source Enforcement | Approved sources only, cryptographic signature validation, egress controls | 6.4.1, 6.4.2, 6.4.3 |
+| C6.7 AI BOM | Publish AI BOM with datasets/weights/licenses, automated generation, completeness checks | 6.7.1, 6.7.2, 6.7.3 |
+| C3.1 Model Authorization & Integrity | Model registry with MBOM/AIBOM, cryptographic signing, lineage tracking | 3.1.1, 3.1.2, 3.1.3, 3.1.4 |
+| C6.6 Supply Chain Attack Monitoring | Incident response playbooks, centralized audit-log monitoring, threat intelligence | 6.6.1, 6.6.2, 6.6.3 |
 
 ## Related Frameworks
 

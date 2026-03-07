@@ -12,6 +12,22 @@ threats:
   - hallucinated software packages weaponized for supply chain attacks
   - reputational and legal liability from incorrect AI outputs
 summary: "LLMs generate false or misleading information that appears credible (hallucination), causing security breaches when fabricated packages are weaponized, legal liability from incorrect advice, and reputational damage from authoritative-sounding misinformation."
+aisvs_mappings:
+  - section: "C7.2"
+    title: "Hallucination Detection & Mitigation"
+    requirements: ["7.2.1", "7.2.2", "7.2.3"]
+  - section: "C7.5"
+    title: "Explainability & Transparency"
+    requirements: ["7.5.1", "7.5.2"]
+  - section: "C10.1"
+    title: "Model Alignment & Safety"
+    requirements: ["10.1.1", "10.1.2", "10.1.3"]
+  - section: "C13.4"
+    title: "Explainable-AI Techniques"
+    requirements: ["13.4.1", "13.4.2", "13.4.3"]
+  - section: "C13.6"
+    title: "Uncertainty Quantification"
+    requirements: ["13.6.1", "13.6.2", "13.6.3", "13.6.4"]
 ---
 
 # LLM09:2025 Misinformation
@@ -44,6 +60,16 @@ This vulnerability addresses how LLMs generate false or misleading information t
 
 1. **Package hallucination attack** — Attackers identify hallucinated package names suggested by coding assistants, then publish malicious packages using those names. Developers unknowingly integrate compromised code.
 2. **Medical chatbot liability** — A company deploys a diagnosis chatbot without ensuring accuracy. Poor guidance causes patient harm, leading to successful litigation.
+
+## AISVS Controls
+
+| AISVS Section | Control | Key Requirements |
+|---------------|---------|-----------------|
+| C7.2 Hallucination Detection | Calculate confidence scores, block low-confidence responses, log hallucination events | 7.2.1, 7.2.2, 7.2.3 |
+| C7.5 Explainability & Transparency | Display confidence scores and reasoning summaries, sanitize explanations | 7.5.1, 7.5.2 |
+| C10.1 Model Alignment & Safety | Version-controlled alignment test-suite, refusal guard-rails, harmful-content metrics | 10.1.1, 10.1.2, 10.1.3 |
+| C13.4 Explainable-AI Techniques | Human-readable explanations, explanation quality validation, feature importance scores | 13.4.1, 13.4.2, 13.4.3 |
+| C13.6 Uncertainty Quantification | Confidence scores with outputs, uncertainty triggers human review, calibrated methods | 13.6.1, 13.6.2, 13.6.3, 13.6.4 |
 
 ## Related Frameworks
 
