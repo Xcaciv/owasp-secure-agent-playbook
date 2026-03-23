@@ -2,6 +2,29 @@
 
 An open-source security playbook for AI agents. Structured, OWASP-grounded procedures that enable agents to perform security engineering tasks — from code review to AI agent security audits.
 
+## Table of Contents
+
+- [Why Use This?](#why-use-this)
+- [What This Is](#what-this-is)
+- [Quick Start](#quick-start)
+- [Skills Catalog](#skills-catalog)
+- [Example Output](#example-output)
+- [Plays](#plays)
+- [Architecture](#architecture)
+- [OWASP Foundation](#owasp-foundation)
+- [Related Projects](#related-projects)
+- [Contributing](#contributing)
+
+## Why Use This?
+
+Without a playbook, asking an AI agent to "review my code for security" gives you a surface-level checklist. With these plays, the agent follows a structured OWASP-grounded procedure — systematically testing every vulnerability class, producing findings with CWE mappings, OpenCRE cross-references, evidence snippets, and specific remediation code.
+
+- **Consistent methodology** — Every assessment follows a documented procedure, not ad-hoc prompting. Results are reproducible across runs and reviewers.
+- **Structured, actionable output** — Findings include severity, CWE, evidence, and remediation steps with code examples. No vague warnings.
+- **Cross-standard traceability** — Findings link to CWE, ASVS, WSTG, and NIST 800-53 via [OpenCRE](https://www.opencre.org) for compliance mapping.
+- **15 security skills** — From dependency CVE scanning to prompt injection testing to multi-agent threat modeling. Install as a Claude Code plugin or use standalone.
+- **Works beyond Claude Code** — Skills are Claude Code plugins; plays are standalone procedures any AI agent can follow.
+
 ## What This Is
 
 This is not a framework or a library. There is no code to import.
@@ -14,7 +37,7 @@ Each **play** is a step-by-step security procedure with checklists, decision cri
 
 **Step 1** — Register the plugin marketplace:
 ```
-/plugin marketplace add cmaenner/agent-security-playbook
+/plugin marketplace add OWASP/secure-agent-playbook
 ```
 
 **Step 2** — Install a skill set:
@@ -22,11 +45,6 @@ Each **play** is a step-by-step security procedure with checklists, decision cri
 /plugin install code-security-skills@agent-security-playbook
 /plugin install ai-security-skills@agent-security-playbook
 ```
-
-| Plugin | Skills Included |
-|--------|----------------|
-| `code-security-skills` | securability-engineering, securability-engineering-review, code-review-security, sca-audit, secrets-scan, api-security-review, web-security-review |
-| `ai-security-skills` | agent-security-audit, llm-risk-assess, agentic-ai-risk-assess, mcp-server-review, prompt-injection-test |
 
 **Step 3** — Use the skills by mentioning the task in conversation:
 
@@ -37,7 +55,7 @@ Each **play** is a step-by-step security procedure with checklists, decision cri
 "Test this chatbot for prompt injection"
 ```
 
-Claude will automatically activate the relevant skill based on context.
+Claude will automatically activate the relevant skill based on context. See [Skills Catalog](#skills-catalog) for all available skills and [Example Output](#example-output) for what the results look like.
 
 **Local development** — To test from a local clone instead of GitHub:
 ```
@@ -49,6 +67,64 @@ Claude will automatically activate the relevant skill based on context.
 Reference plays directly as procedures for any AI agent or manual use:
 - Point your agent at a play: *"Follow the procedure in `plays/tier4-ai-security/agent-security-audit.md`"*
 - Or use the plays as checklists for manual security reviews
+
+## Skills Catalog
+
+### Code & Infrastructure Security (`code-security-skills`)
+
+| Skill | What It Does | Say This | OWASP Ref |
+|-------|-------------|----------|-----------|
+| `code-review-security` | Security code review mapped to Top 10 + ASVS | "Review this code for security issues" | Top 10, ASVS |
+| `sca-audit` | Dependency CVE scanning with reachability analysis | "Scan my dependencies for CVEs" | A06:2021 |
+| `secrets-scan` | Detect hardcoded credentials and API keys | "Scan for hardcoded secrets" | CWE-798 |
+| `api-security-review` | API review against OWASP API Top 10 (2023) | "Review this API for security" | API Top 10 |
+| `web-security-review` | Web app review against OWASP Top 10 (2021) | "Review this web app for OWASP Top 10" | Top 10 |
+| `iac-security-review` | IaC security (Terraform, K8s, CloudFormation) | "Review this Terraform for security" | CIS Benchmarks |
+| `securability-engineering` | Generate inherently securable code (FIASSE) | "Generate secure code for..." | FIASSE |
+| `securability-engineering-review` | Assess code securability (0-10 SSEM scoring) | "Assess the securability of this code" | FIASSE/SSEM |
+| `security-guidance` | Auto-triggered ASVS guidance for security-sensitive code | *(auto-triggered)* | ASVS 5.0 |
+
+### AI & Agent Security (`ai-security-skills`)
+
+| Skill | What It Does | Say This | OWASP Ref |
+|-------|-------------|----------|-----------|
+| `agent-security-audit` | Audit agent permissions, injection surfaces, data exfil paths | "Audit this agent's security" | LLM Top 10 |
+| `llm-risk-assess` | LLM app assessment against LLM Top 10 2025 | "Assess LLM risks for this app" | LLM Top 10 |
+| `agentic-ai-risk-assess` | Agentic app assessment against Top 10 Agentic 2026 | "Assess agentic AI risks" | Agentic Top 10 |
+| `mcp-server-review` | MCP server security review | "Review this MCP server" | LLM Top 10 |
+| `prompt-injection-test` | Prompt injection testing (Arcanum PI Taxonomy) | "Test for prompt injection" | LLM01 |
+| `multi-agentic-threat-model` | CSA MAESTRO 7-layer threat modeling | "Model threats for this multi-agent system" | CSA MAESTRO |
+
+## Example Output
+
+Running `"Review src/auth/ for security issues"` on a Node.js/Express codebase produces findings like this:
+
+```
+Security Code Review — src/auth/
+Scope: Node.js/Express, server-side, processes user credentials
+Findings: CRITICAL 1 | HIGH 2 | MEDIUM 1 | LOW 0
+```
+
+### [CRITICAL] SQL Injection in User Lookup
+
+- **CWE**: [CWE-89](https://cwe.mitre.org/data/definitions/89.html)
+- **OpenCRE**: [CRE-764-507](https://www.opencre.org/cre/764-507) — Injection Prevention
+- **OWASP Ref**: A03:2021 Injection
+- **Location**: `src/auth/login.js:42`
+- **Impact**: Attacker can extract the entire users table, bypass authentication, or execute arbitrary SQL via crafted `id` parameter
+- **Evidence**:
+  ```js
+  // src/auth/login.js:42
+  const user = await db.query("SELECT * FROM users WHERE id=" + req.params.id);
+  ```
+- **Remediation**: Use parameterized queries:
+  ```js
+  const user = await db.query("SELECT * FROM users WHERE id = $1", [req.params.id]);
+  ```
+- **Confidence**: HIGH
+
+> Every skill produces structured findings with severity, CWE, evidence, and remediation code.
+> See [`examples/`](examples/) for complete sample assessment reports.
 
 ## Plays
 
@@ -112,6 +188,8 @@ All plays reference OWASP standards and datasets:
 | [OpenCRE](https://www.opencre.org) | Cross-standard requirement mappings (CWE, ASVS, WSTG, NIST 800-53). We use OpenCRE links in findings for multi-framework traceability. |
 
 ## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 New plays should:
 - Solve one well-defined security task
