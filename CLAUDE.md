@@ -76,15 +76,21 @@ Severity levels: CRITICAL, HIGH, MEDIUM, LOW, INFORMATIONAL
 ```
 agent-security-playbook/
 ├── CLAUDE.md                     # This file — agent persona & guidelines
-├── .claude/skills/               # Claude Code invocable skills (type /name to run)
-│   ├── agent-security-audit/     # /agent-security-audit
-│   ├── llm-risk-assess/          # /llm-risk-assess
-│   ├── mcp-server-review/        # /mcp-server-review
-│   ├── prompt-injection-test/    # /prompt-injection-test
-│   ├── sca-audit/                # /sca-audit
-│   ├── code-review-security/     # /code-review-security
-│   ├── secrets-scan/             # /secrets-scan
-│   └── api-security-review/      # /api-security-review
+├── .claude-plugin/               # Plugin marketplace config for Claude Code installation
+│   └── marketplace.json
+├── skills/                       # Agent Skills (SKILL.md per skill, installable as plugin)
+│   ├── securability-engineering/
+│   ├── securability-engineering-review/
+│   ├── agent-security-audit/
+│   ├── agentic-ai-risk-assess/
+│   ├── api-security-review/
+│   ├── code-review-security/
+│   ├── llm-risk-assess/
+│   ├── mcp-server-review/
+│   ├── prompt-injection-test/
+│   ├── sca-audit/
+│   ├── secrets-scan/
+│   └── web-security-review/
 ├── plays/                        # Full reference procedures (detailed playbook)
 │   ├── tier1-code-analysis/      # Code & dependency analysis plays
 │   ├── tier2-design-review/      # Architecture & design review plays
@@ -97,14 +103,16 @@ agent-security-playbook/
 │   ├── wstg/                     # WSTG checklist JSON
 │   ├── samm/                     # SAMM YAML maturity model
 │   └── llm-top10/                # Parsed LLM Top 10 data
-└── templates/
-    ├── finding.md                # Standard finding template
-    └── report.md                 # Assessment report template
+├── templates/
+│   ├── finding.md                # Standard finding template
+│   └── report.md                 # Assessment report template
+└── template/
+    └── SKILL.md                  # Skill template for contributors
 ```
 
 ## Two-Layer Architecture
 
-- **`.claude/skills/`** — Concise `SKILL.md` files that Claude Code discovers and makes invocable via `/skill-name`. These contain the procedure summary and tool permissions. Claude also auto-invokes relevant skills based on conversation context.
+- **`skills/`** — Self-contained `SKILL.md` files following the [Agent Skills spec](https://agentskills.io/specification). Installable as a Claude Code plugin via `.claude-plugin/marketplace.json`. Each skill summarizes a procedure and references its corresponding play.
 - **`plays/`** — Full reference procedures with detailed checklists, tables, and examples. Skills reference these for comprehensive coverage. Contributors edit plays; skills are the invocation layer.
 
 ## Play Tiers (Priority Order)
@@ -112,7 +120,7 @@ agent-security-playbook/
 | Tier | Focus | Status |
 |------|-------|--------|
 | **Tier 4** | AI/Agent Security — prompt injection, excessive agency, MCP risks | Built |
-| **Tier 1** | Code Analysis — SCA, code review, secrets, API security | Built |
+| **Tier 1** | Code Analysis — securability review, SCA, code review, secrets, API security | Built |
 | **Tier 2** | Design Review — threat modeling, ASVS verification, infra hardening | Planned |
 | **Tier 3** | Testing — WSTG checklist, DAST scanning, attack surface mapping | Planned |
 | **Tier 5** | Governance — SAMM maturity, compliance mapping, reporting | Planned |
@@ -123,7 +131,7 @@ Plays reference these machine-readable OWASP datasets (populate `data/` as neede
 
 | Dataset | Source Repo | Format | Used By |
 |---------|-----------|--------|---------|
-| ASVS v5.0 | `OWASP/ASVS` — `5.0/docs_en/` | JSON, CSV, XML | asvs-verify, code-review-security |
+| ASVS v5.0 | `eoftedal/owasp-agent-skills-project` — `references/ASVS/` | Markdown + YAML frontmatter | code-review-security (80 section files in `data/asvs/`) |
 | WSTG Checklist | `OWASP/wstg` — `checklists/` | JSON | wstg-checklist |
 | SAMM Model | `owaspsamm/core` — `model/` | YAML | samm-assess |
 | LLM Top 10 v2.0 | `OWASP/www-project-top-10-for-large-language-model-applications` | Markdown | llm-risk-assess |

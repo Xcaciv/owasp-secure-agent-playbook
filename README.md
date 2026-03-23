@@ -12,21 +12,37 @@ Each **play** is a step-by-step security procedure with checklists, decision cri
 
 **With Claude Code (recommended):**
 
-1. Clone this repo
-2. Open Claude Code in the repo directory
-3. Type `/` to see all available security skills:
-
+**Step 1** — Register the plugin marketplace:
 ```
-/agent-security-audit    — Audit an AI agent's security posture
-/llm-risk-assess         — Assess LLM app against OWASP LLM Top 10
-/mcp-server-review       — Review MCP server for security issues
-/sca-audit               — Scan dependencies for known CVEs
-/code-review-security    — Security-focused code review
-/secrets-scan            — Detect hardcoded credentials and secrets
-/api-security-review     — Review API against OWASP API Security Top 10
+/plugin marketplace add cmaenner/agent-security-playbook
 ```
 
-Claude also auto-invokes relevant skills based on your conversation — ask it to "review this code for security issues" and it will pick up the right play.
+**Step 2** — Install a skill set:
+```
+/plugin install code-security-skills@agent-security-playbook
+/plugin install ai-security-skills@agent-security-playbook
+```
+
+| Plugin | Skills Included |
+|--------|----------------|
+| `code-security-skills` | securability-engineering, securability-engineering-review, code-review-security, sca-audit, secrets-scan, api-security-review, web-security-review |
+| `ai-security-skills` | agent-security-audit, llm-risk-assess, agentic-ai-risk-assess, mcp-server-review, prompt-injection-test |
+
+**Step 3** — Use the skills by mentioning the task in conversation:
+
+```
+"Review this code for security issues"
+"Scan my dependencies for CVEs"
+"Audit this MCP server configuration"
+"Test this chatbot for prompt injection"
+```
+
+Claude will automatically activate the relevant skill based on context.
+
+**Local development** — To test from a local clone instead of GitHub:
+```
+/plugin install /path/to/agent-security-playbook
+```
 
 **Without Claude Code:**
 
@@ -45,6 +61,8 @@ The differentiator — security procedures purpose-built for the AI agent era.
 | [agent-security-audit](plays/tier4-ai-security/agent-security-audit.md) | Audit agent permissions, prompt injection surfaces, data exfiltration paths, guardrails |
 | [llm-risk-assess](plays/tier4-ai-security/llm-risk-assess.md) | Assess LLM applications against OWASP Top 10 for LLM Applications |
 | [mcp-server-review](plays/tier4-ai-security/mcp-server-review.md) | Review MCP server implementations for overpermissioning, injection, data exposure |
+| [prompt-injection-testing](plays/tier4-ai-security/prompt-injection-testing.md) | Test LLM apps against 18 attack techniques, 20 evasions, 13 intents |
+
 
 ### Tier 1: Code & Dependency Analysis
 
@@ -56,6 +74,7 @@ Immediate, practical value for any codebase.
 | [code-review-security](plays/tier1-code-analysis/code-review-security.md) | Systematic security code review mapped to OWASP Top 10 and ASVS |
 | [secrets-scan](plays/tier1-code-analysis/secrets-scan.md) | Detect hardcoded credentials, API keys, and tokens |
 | [api-security-review](plays/tier1-code-analysis/api-security-review.md) | Review APIs against OWASP API Security Top 10 |
+| [securability-engineering-review](plays/tier1-code-analysis/securability-engineering-review.md) | Assess code against FIASSE/SSEM securable attributes: Maintainability, Trustworthiness, Reliability, and Transparency |
 
 ### Planned
 
@@ -67,10 +86,10 @@ Immediate, practical value for any codebase.
 
 Two-layer design:
 
-- **`.claude/skills/`** — Concise `SKILL.md` files with YAML frontmatter. Claude Code auto-discovers these and makes them invocable via `/skill-name`. They also auto-activate based on conversation context.
+- **`skills/`** — Self-contained `SKILL.md` files following the [Agent Skills spec](https://agentskills.io/specification). Installable as a Claude Code plugin via `.claude-plugin/marketplace.json`. Each skill summarizes a procedure and references its corresponding play.
 - **`plays/`** — Full reference procedures with detailed checklists, tables, decision criteria, and examples. Skills reference these for comprehensive coverage.
 
-Contributors edit plays. Skills are the thin invocation layer. This means the playbook works with any AI agent (just point it at a play), while Claude Code users get native slash-command integration.
+Contributors edit plays. Skills are the thin invocation layer. This means the playbook works with any AI agent (just point it at a play), while Claude Code users get plugin-based installation.
 
 ## OWASP Foundation
 
@@ -83,6 +102,14 @@ All plays reference OWASP standards and datasets:
 - [OWASP WSTG](https://owasp.org/www-project-web-security-testing-guide/) — Testing methodology
 - [OWASP SAMM](https://owaspsamm.org) — Security program maturity model
 - [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org) — Developer security guidance
+
+## Related Projects
+
+| Project | Relationship |
+|---------|-------------|
+| [OWASP Agent Skills Project](https://github.com/eoftedal/owasp-agent-skills-project) | Proactive ASVS 5.0 guidance for AI coding agents — helps agents **write** secure code. We use their ASVS reference data in `data/asvs/`. Complementary: they guide code generation, we find vulnerabilities in existing code. |
+| [Arcanum PI Taxonomy](https://github.com/Arcanum-Sec/arc_pi_taxonomy) | Prompt injection attack classification by Jason Haddix. Our `prompt-injection-testing` play is built on this taxonomy. CC BY 4.0. |
+| [OpenCRE](https://www.opencre.org) | Cross-standard requirement mappings (CWE, ASVS, WSTG, NIST 800-53). We use OpenCRE links in findings for multi-framework traceability. |
 
 ## Contributing
 
