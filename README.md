@@ -1,4 +1,4 @@
-# agent-security-playbook
+# Secure Agent Playbook
 
 An open-source security playbook for AI agents. Structured, OWASP-grounded procedures that enable agents to perform security engineering tasks — from code review to AI agent security audits.
 
